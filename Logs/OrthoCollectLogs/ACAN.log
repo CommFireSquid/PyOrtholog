@@ -1,0 +1,42 @@
+Time of Execution: 2018-08-30 02:08:38.897606 ||| Parameter Supplied: ACAN
+*******************************************************
+Begin Initial Search TaxID = 9606
+-------------------------------
+Initial Entrez Gene DB Search (to get the geneID number for the symbol): 
+-------------------------------
+{'IdList': ['176'], 'RetStart': '0', 'TranslationSet': [], 'RetMax': '1', 'QueryTranslation': 'ACAN[Gene Name] AND 9606[Taxonomy ID]', 'TranslationStack': [{'Term': 'ACAN[Gene Name]', 'Field': 'Gene Name', 'Explode': 'N', 'Count': '226'}, {'Term': '9606[Taxonomy ID]', 'Field': 'Taxonomy ID', 'Explode': 'N', 'Count': '223943'}, 'AND'], 'Count': '1'}
+
+-------------------------------
+Entrez Gene Record Fetch (To get the accession and range):
+-------------------------------
+
+1. ACAN
+Official Symbol: ACAN and Name: aggrecan [Homo sapiens (human)]
+Other Aliases: AGC1, AGCAN, CSPG1, CSPGCP, MSK16, SEDK, SSOAOD
+Other Designations: aggrecan core protein; cartilage-specific proteoglycan core protein; chondroitin sulfate proteoglycan core protein 1; large aggregating proteoglycan
+Chromosome: 15; Location: 15q26.1
+Annotation: Chromosome 15 NC_000015.10 (88803442..88875354)
+MIM: 155760
+ID: 176
+
+
+-------------------------------
+Accession Found By Regex:
+-------------------------------
+NC_000015.10 in the range 88803442:88875354 Non-complement
+Competion intial search for geneName = ACAN
+*******************************************************
+Current Time: 2018-08-30 02:08:49.120144
+Found 190 Results In Ortholog Table
+*******************************************************
+Begin Multiprocessing
+At time: 2018-08-30 02:08:49.292380
+Completed Processing: Begin Write to DB Section
+2018-08-30 02:14:53.468595
+*******************************************************
+Condensing Members
+Writing 191 values to database
+At Time: 2018-08-30 02:14:53.487327
+*******************************************************
+Program Completed at: 2018-08-30 02:14:53.506912
+Runtime: 0:06:14.609306
