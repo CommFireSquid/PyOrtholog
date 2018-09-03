@@ -1,0 +1,42 @@
+Time of Execution: 2018-09-03 02:48:27.829352 ||| Parameter Supplied: ANGPT2
+*******************************************************
+Begin Initial Search TaxID = 9606
+-------------------------------
+Initial Entrez Gene DB Search (to get the geneID number for the symbol): 
+-------------------------------
+{'Count': '1', 'TranslationSet': [], 'TranslationStack': [{'Count': '240', 'Explode': 'N', 'Term': 'ANGPT2[Gene Name]', 'Field': 'Gene Name'}, {'Count': '223943', 'Explode': 'N', 'Term': '9606[Taxonomy ID]', 'Field': 'Taxonomy ID'}, 'AND'], 'RetMax': '1', 'RetStart': '0', 'QueryTranslation': 'ANGPT2[Gene Name] AND 9606[Taxonomy ID]', 'IdList': ['285']}
+
+-------------------------------
+Entrez Gene Record Fetch (To get the accession and range):
+-------------------------------
+
+1. ANGPT2
+Official Symbol: ANGPT2 and Name: angiopoietin 2 [Homo sapiens (human)]
+Other Aliases: AGPT2, ANG2
+Other Designations: angiopoietin-2; ANG-2; Tie2-ligand; angiopoietin-2B; angiopoietin-2a
+Chromosome: 8; Location: 8p23.1
+Annotation: Chromosome 8 NC_000008.11 (6499651..6563420, complement)
+MIM: 601922
+ID: 285
+
+
+-------------------------------
+Accession Found By Regex:
+-------------------------------
+NC_000008.11 in the range 6499651:6563420 complement
+Competion intial search for geneName = ANGPT2
+*******************************************************
+Current Time: 2018-09-03 02:48:37.974961
+Found 226 Results In Ortholog Table
+*******************************************************
+Begin Multiprocessing
+At time: 2018-09-03 02:48:38.150561
+Completed Processing: Begin Write to DB Section
+2018-09-03 02:50:16.127173
+*******************************************************
+Condensing Members
+Writing 227 values to database
+At Time: 2018-09-03 02:50:16.129349
+*******************************************************
+Program Completed at: 2018-09-03 02:50:16.246078
+Runtime: 0:01:48.416726
