@@ -67,6 +67,7 @@ def orthoLogIterWrite(database, filename):
 
 
 	conn.commit() # Final commit to catch any remaining transactions in the ether
+	os.system('rm {}'.format("./Data/" + filename))
 
 if __name__ == "__main__":
 	main()

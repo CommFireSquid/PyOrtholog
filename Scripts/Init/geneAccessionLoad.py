@@ -65,6 +65,7 @@ def main()
 			line = fileIn.readline()
 
 	conn.commit()
+	os.system('rm {}'.format(datfiledirectory + filename))
 
 def isInteger(val):
 	try:

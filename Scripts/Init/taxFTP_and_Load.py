@@ -24,6 +24,8 @@ def main():
 	logFile.write('File: {} located in the data directory: {} ready for load processing\n'.format(filename, dataDirectory))
 	parseTaxNames(dataDirectory + filename, database, logFile)
 
+	os.system('rm {}'.format(dataDirectory + filename))
+
 	logFile.close()
 
 def ftpHarvest_TarGz(targetArchive, targetFile, filename, logFile):
