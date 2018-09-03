@@ -62,7 +62,7 @@ geneObject = Gene('None')
 startTaxID = 9606
 processCount = 40 # Number of processes to be spawned for the ortholog section
 outputLineLength = 70 # Line widths for the final fasta outputs (ncbi standard is 70)
-Entrez.email = 'bobanderson2015@gmail.com'
+Entrez.email = ''
 
 # Log file formatting
 recordDivider = '*******************************************************'
