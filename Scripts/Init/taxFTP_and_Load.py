@@ -24,7 +24,8 @@ def main():
 	logFile.write('File: {} located in the data directory: {} ready for load processing\n'.format(filename, dataDirectory))
 	parseTaxNames(dataDirectory + filename, database, logFile)
 
-	os.system('rm {}'.format(dataDirectory + filename))
+	os.remove(dataDirectory + filename)
+	#os.system('rm {}'.format(dataDirectory + filename))
 
 	logFile.close()
 
@@ -59,11 +60,17 @@ def ftpHarvest_TarGz(targetArchive, targetFile, filename, logFile):
 	fileOut.close()
 
 	# Decompress, Dearchive, and Extract the file I need from temp folder and delete the others
-	os.system('gunzip {}'.format(tempFolder + targetArchive)) # Unzip the tar archive
-	os.system('tar -xf {} -C {}'.format(tempFolder + targetArchive[:-3], tempFolder)) # Dearchive the tar file into the temp directory
-	os.system('[ -f {} ] && rm {} '.format(dataDirectory + filename, dataDirectory + filename)) # If there is a file where we want to move the names.dmp delete it
-	os.system('mv {} {}'.format(tempFolder + targetFile, dataDirectory + filename))	# Move the names.dmp file
-	os.system('[ -d {} ] && rm -r {}'.format(tempFolder,tempFolder))	# if the temp directory exists (it does) delete it recursively
+	shutil.unpack_archive(tempFolder + targetArchive)
+	#os.system('gunzip {}'.format(tempFolder + targetArchive)) # Unzip the tar archive
+	shutil.unpack_archive(tempFolder + targetArchive[:-3], tempFolder)
+	#os.system('tar -xf {} -C {}'.format(tempFolder + targetArchive[:-3], tempFolder)) # Dearchive the tar file into the temp directory
+	if os.path.isfile(dataDirectory + filename):
+		os.remove(dataDirectory + filename)
+	#os.system('[ -f {} ] && rm {} '.format(dataDirectory + filename, dataDirectory + filename)) # If there is a file where we want to move the names.dmp delete it
+	shutil.move(tempFolder + targetFile, dataDirectory + filename)
+	#os.system('mv {} {}'.format(tempFolder + targetFile, dataDirectory + filename))	# Move the names.dmp file
+	shutil.rmtree(tempFolder)
+	#os.system('[ -d {} ] && rm -r {}'.format(tempFolder,tempFolder))	# if the temp directory exists (it does) delete it recursively
 
 
 def parseTaxNames(filename, database, logFile):
@@ -80,6 +87,8 @@ def parseTaxNames(filename, database, logFile):
 	databaseConn = sqlite3.connect(database)
 	c = databaseConn.cursor()
 	c.execute('CREATE TABLE IF NOT EXISTS taxTable (taxID INTEGER PRIMARY KEY, scientificName VARCHAR(50) NOT NULL, commonName VARCHAR(50))')
+	c.execute('DELETE FROM taxTable')
+	databaseConn.commit()
 
 	valueStrings = []
 	commitSize = 10000

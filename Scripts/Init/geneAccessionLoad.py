@@ -24,7 +24,8 @@ def main()
 	c = conn.cursor()
 
 	c.execute("CREATE TABLE IF NOT EXISTS ncbi_geneAccession (geneAccessionID INTEGER PRIMARY KEY, taxID INTEGER, geneID INTEGER, status VARCHAR(15), RNA_nucleotide_accession_version VARCHAR(20), protein_accession_version VARCHAR(20), protein_gi INTEGER, genomic_nucleotide_accession_version VARCHAR(20), genomic_nucleotide_gi INTEGER, start_position_on_the_genomic_accession INTEGER, end_position_on_the_genomic_accession INTEGER, orientation VARCHAR(1), assembly VARCHAR(20), mature_peptide_accession_version VARCHAR(20), mature_peptide_gi INTEGER, symbol VARCHAR(20)) ")
-
+	c.execute('DELETE FROM ncbi_geneAccession')
+	conn.commit()
 
 	# Find the next available PK value for the table and default to 0 if no value is found
 	maxPKval = 0
@@ -46,7 +47,7 @@ def main()
 				elif isInteger(x):
 					hold = hold + "{}, ".format(x)
 				else:
-					x = x.replace("'","")
+					x = x.replace("'","''")
 					hold = hold + "\'{}\', ".format(x)
 			hold = hold[:-2] + ")"
 
@@ -65,7 +66,8 @@ def main()
 			line = fileIn.readline()
 
 	conn.commit()
-	os.system('rm {}'.format(datfiledirectory + filename))
+	os.remove(datfiledirectory + filename)
+	#os.system('rm {}'.format(datfiledirectory + filename))
 
 def isInteger(val):
 	try:
@@ -85,6 +87,8 @@ def ftpHarvest(target, filename, fileDirectory):
 	ftp.close()
 	fileOut.close()
 
-	os.system('gunzip {}'.format(target))
-	os.system('mv {} {}'.format(target[:-3], fileDirectory + filename))
+	shutil.unpack_archive(target)
+	#os.system('gunzip {}'.format(target))
+	shutil.move(target[-3], fileDirectory + filename)
+	#os.system('mv {} {}'.format(target[:-3], fileDirectory + filename))
 

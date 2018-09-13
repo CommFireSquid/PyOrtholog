@@ -37,8 +37,10 @@ def ftpHarvest(target, filename):
 	ftp.close()
 	fileOut.close()
 
-	os.system('gunzip {}'.format(target))
-	os.system('mv {} {}'.format(target[:-3], "./Data/" + filename))
+	shutil.unpack_archive(target)
+	#os.system('gunzip {}'.format(target))
+	shutil.move(target[:-3], "./Data/" + filename)
+	#os.system('mv {} {}'.format(target[:-3], "./Data/" + filename))
 
 def orthoLogIterWrite(database, filename):
 	conn = sqlite3.connect(database)
@@ -67,7 +69,8 @@ def orthoLogIterWrite(database, filename):
 
 
 	conn.commit() # Final commit to catch any remaining transactions in the ether
-	os.system('rm {}'.format("./Data/" + filename))
+	os.remove("./Data/" + filename)
+	#os.system('rm {}'.format("./Data/" + filename))
 
 if __name__ == "__main__":
 	main()
