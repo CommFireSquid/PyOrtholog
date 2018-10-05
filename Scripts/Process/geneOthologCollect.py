@@ -256,10 +256,6 @@ def processFasta(geneValue, fastaDestination):
 		with Entrez.efetch(db="nucleotide", id="{}".format(foundAccession), 
 				rettype="fasta", retmode="text") as fastaHandle:
 			for record in SeqIO.parse(fastaHandle, "fasta"):
-				if complement:
-					sequence = (record.seq).complement()
-				else:
-					sequence = record.seq
 				with open(fastaDestination, 'w') as fastaOut:
 					# Preprocess record - shorten to range and modify description
 					if len(foundRange) == 2: # With accession range
@@ -275,7 +271,7 @@ def processFasta(geneValue, fastaDestination):
 						fastaOut.write(">{}".format(record.description))
 						lineToWrite = sequence
 					# Reverse the string if it is a complement as that is how NCBI does it
-					lineToWrite = lineToWrite[::-1]
+					lineToWrite = lineToWrite.reverse_complement()
 					# Write sequence to file
 					while len(lineToWrite) >= outputLineLength:	
 						if len(lineToWrite) == outputLineLength:
