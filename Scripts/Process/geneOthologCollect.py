@@ -271,7 +271,8 @@ def processFasta(geneValue, fastaDestination):
 						fastaOut.write(">{}".format(record.description))
 						lineToWrite = sequence
 					# Reverse the string if it is a complement as that is how NCBI does it
-					lineToWrite = lineToWrite.reverse_complement()
+					if complement:
+						lineToWrite = lineToWrite.reverse_complement()
 					# Write sequence to file
 					while len(lineToWrite) >= outputLineLength:	
 						if len(lineToWrite) == outputLineLength:
@@ -285,7 +286,15 @@ def processFasta(geneValue, fastaDestination):
 					fastaOut.write('\n\n') # NCBI FASTAs come with new line at end of file
 		return True, geneID, foundAccession, foundRange, complement
 	else: # No entrez accession annotation
-		return False, geneID, 'Unknown', [0, 0], False
+		'''
+		try:
+			subPconn = sqlite3.connect(databaseName)
+			subPcurs = connection.cursor()
+		except Exception as _:
+			logFile.write('Error Contacting the database in subprocess')
+			exit(1)
+		return processFasta(fastaDestination)'''
+		return False, geneID, "NULL", [0, 0], False
 
 # Database insert functions
 def condenseMember(index):
