@@ -61,7 +61,7 @@ from OrthologObjects import Gene, GeneMember # Cool custom object for storing th
 geneObject = Gene('None')
 startTaxID = 9606
 processCount = 40 # Number of processes to be spawned for the ortholog section
-outputLineLength = 70 # Line widths for the final fasta outputs (ncbi standard is 70)
+outputLineLength = 70 # Line widths for the final fasta outputs (NCBI standard is 70)
 Entrez.email = ''
 
 # Log file formatting
@@ -83,6 +83,8 @@ cursor = None
 def main():
 	global geneObject
 	global Entrez
+	global connection
+	global cursor
 	startTime = datetime.datetime.now() # Time execution begins
 
 	# Collect Command Line Arguments
@@ -106,7 +108,7 @@ def main():
 	# Initialization of Storage Files
 	createLogFile()	# Opening the global logFile "geneName.log"
 	createFastaDir() # Create the FASTA file storage location (Delete if there is a directory under the gene name)
-	connectDatabase() # Connecting to the database and creating global connection and cursor
+	connection, cursor = connectDatabase() # Connecting to the database and creating global connection and cursor
 
 	
 
@@ -286,13 +288,9 @@ def processFasta(geneValue, fastaDestination):
 					fastaOut.write('\n\n') # NCBI FASTAs come with new line at end of file
 		return True, geneID, foundAccession, foundRange, complement
 	else: # No entrez accession annotation
-		'''
-		try:
-			subPconn = sqlite3.connect(databaseName)
-			subPcurs = connection.cursor()
-		except Exception as _:
-			logFile.write('Error Contacting the database in subprocess')
-			exit(1)
+		'''subConn, subCurs = connectDatabase()
+		sql = 'SELECT geneID FROM refseq WHERE.......'
+		geneID = subCurs.execute(sql)
 		return processFasta(fastaDestination)'''
 		return False, geneID, "NULL", [0, 0], False
 
@@ -345,9 +343,6 @@ def insertIntoDB():
 def connectDatabase():
 	# Establishes the connection to the database and defines global values for connection and cursor
 	# 21 May 2018
-	global connection
-	global cursor
-	global exitCode
 	try:
 		connection = sqlite3.connect(databaseName)
 		cursor = connection.cursor()
@@ -373,7 +368,6 @@ def createLogFile():
 	# Creates the log file in the logDirectory (creates logDirectory if it does not exist)
 	# 21 May 2018
 	global logFile
-	global exitCode
 	logName = geneObject.geneName + '.log'
 	if not os.path.isdir(logDirectory):
 		os.makedirs(logDirectory)
@@ -410,7 +404,7 @@ def usage(errMessage):
 	with open(defaultErrorFile,'w') as err:
 		err.write("Below is the error resulting from fastaCollect.py on {}\n".format(time))
 		err.write("{}\n".format(errMessage))
-		err.write("Usage:\tfastaCollect.py -g geneID")
+		err.write("Usage:\tfastaCollect.py -g geneID -e email@email.com")
 	sys.exit(1)
 
 def isInteger(value):
