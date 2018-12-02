@@ -43,7 +43,7 @@ def writeToDB(database, filename):
 	conn.commit()
 
 	commitCTR = 0
-	with open(datfiledirectory + datfilename 'r') as fileIn:
+	with open(datfiledirectory + datfilename, 'r') as fileIn:
 		line = fileIn.readline() # First line will be the table headers which I already have, so it will be ignored
 		line = fileIn.readline()
 
