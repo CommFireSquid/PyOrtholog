@@ -106,3 +106,6 @@ def usage(errMessage):
 		err.write("{}\n".format(errMessage))
 		err.write("Usage:\tfastaCollect.py -e email@email.com")
 	sys.exit(1)
+
+if __name__ == '__main__':
+	main()
