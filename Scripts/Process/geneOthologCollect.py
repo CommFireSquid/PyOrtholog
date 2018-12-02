@@ -247,6 +247,24 @@ def processFasta(geneValue, fastaDestination):
 			# Find the accession with regexAccession and process
 			accession, complement, returned = regexAccession(result) # Currently not doing anything with returned
 
+	if not returned and isInteger(geneValue): # No entrez accession annotation case: resolve using refseq table 
+		subConn, subCurs = connectDatabase()
+		sql = 'SELECT geneID, genomic_nucleotide_gi, orientation, start_position_on_the_genomic_accession, '+
+			'end_position_on_the_genomic_accession FROM refseq WHERE geneID = {}'.format()
+		result = subCurs.execute(sql)
+		if result:
+			geneID, accession, orientation, start, end = result.fetchone()
+			if orientation == '-':
+				complement = True
+			else:
+				complement = False
+			if start and end:
+				accession = [accession,start,end]
+			else:
+				accession = [accession]
+			returned = True
+
+
 	# Universal fasta process #
 	if returned: # Where an annotation for the entrez information was found
 		foundAccession = accession[0]
@@ -287,11 +305,8 @@ def processFasta(geneValue, fastaDestination):
 						fastaOut.write('\n' + lineToWrite) # Write the possibly remaining line < line length
 					fastaOut.write('\n\n') # NCBI FASTAs come with new line at end of file
 		return True, geneID, foundAccession, foundRange, complement
-	else: # No entrez accession annotation
-		'''subConn, subCurs = connectDatabase()
-		sql = 'SELECT geneID FROM refseq WHERE.......'
-		geneID = subCurs.execute(sql)
-		return processFasta(fastaDestination)'''
+
+	else:
 		return False, geneID, "NULL", [0, 0], False
 
 # Database insert functions

@@ -32,7 +32,7 @@ def writeToDB(database, filename):
 	connection = sqlite3.connect(database)
 	cursor = connection.cursor()
 
-	sql = 'CREATE TABLE IF NOT EXISTS refseq (taxID INTEGER, geneID INTEGER, status VARCHAR(15), ' +
+	sql = 'CREATE TABLE IF NOT EXISTS refseq (taxID INTEGER, geneID INTEGER PRIMARY KEY, status VARCHAR(15), ' +
 		'RNA_nucleotide_Accession_Version VARCHAR(20), RNA_Nucleotide_GI INTEGER, protein_accession_version VARCHAR(20), ' +
 		'protein_gi INTEGER, genomic_nucleotide_accession_version VARCHAR(20), genomic_nucleotide_gi INTEGER, ' +
 		'start_position_on_the_genomic_accession INTEGER, end_position_on_the_genomic_accession INTEGER, ' +
