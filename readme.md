@@ -7,6 +7,8 @@ The data directory is not included as it is too large, but scripts will be setup
 
 To run the geneOrthologCollect.py script, include the arguments for gene name, email, and API key (you will need to register with NCBI to get one) as the script will not work without an API key due to the query volume.
 
+Scripts included under Misc were utilized as transitional steps between collection and alignment, or to take the alignment and create a data table for analysis in R. The descriptions of these scripts and how to use them is in the final thesis.
+
 Finally, there have been several changes since the creation of the ACAN files, so do not trust the results you see there. A quick glance will show that the method used to generate these files does not include complements in cases where the coding strand is not the strand provided by the genome. This error was corrected for with the implementation of Biopython additions. Essentially, the files created by the scripts in their current state will not match the sample until I get a chance to update them.
 
 ################################
