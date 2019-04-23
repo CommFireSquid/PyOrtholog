@@ -1,0 +1,84 @@
+Run Instructions:
+	There are three major components to this project that will run at three distinct times with 4 different sets of requirements:
+			1. Sequence Collection
+			2. Alignment Preparation
+			3. Alignment Process / Results
+			4. R Analysis
+
+Important Notes:
+	+ These scripts were written on three different systems and two different operating systems, every intention was to make it universal 
+		and OS-independent, but step 1 was only tested on Linux, and 2+ were tested on Windows
+	+ Another OS complication was that every system was using a different version of python (3.5 on Linux and 3.7 or 3.6 for the windows machines)
+	+ The python execution command on the Linux machine was python3, so Manage.py will attempt to call the its subscript with that, and that is 
+		how I will reference the python command within these notes. I think Manage.py is the only place that a change would be required if this 
+		is not your configuration.
+	+ Several libraries are required for these scripts, but I think the only non-default one is Biopython, you may need shutil, getopt, sqlite3, 
+		and a few others if they are not already present
+
+1. Sequence Collection
+	A. Requirements:
+		1. The file structure must be correct:
+			+ PyOrtholog
+				+ Logs
+				+ Scripts
+					+ Init
+						dbLocal_Load.py
+					+ Process
+						- geneOrthologCollect.py
+						- __init__.py
+						- OrthologObjects.py
+				+ Data
+				+ FASTA
+				- genesToCollect.py
+				- Manage.py
+		2. The python version must be 3.5 or newer (older versions of 3 may be okay, but are untested. 2 will not work)
+		3. Place the desired genes (to collect) with each name on a line in genesToCollect.txt
+		4. You will need an API key for sequence collection, I did not plan to share this script so I did not make this easy.
+			I think the API must match the provided email, and the key should be placed in a file called myAPIkey.txt in the 
+			directory above PyOrtholog (../myAPIkey.txt where the executing directory is PyOrtholog)
+	B. Execution Sequence (All performed from PyOrtholog)
+		1. python3 ./Scripts/Init/dbLocal_Load.py -e email@unomaha.edu
+			A. Replace email with your email
+		2. python3 Manage.py -e email@unomaha.edu
+			A. Replace email as with last step
+	C. How to know it is working:
+		1. You will see a printed line appear with the success of each collection
+		2. I would sometimes experience weird internet connection errors where my connection would drop and the process will
+			show the raised exceptions, if this occurs you will have to wait for the connection to return and then begin 
+			execution (remove collected genes from the genesToCollect.txt file to avoid recollection)
+		3. You will see FASTA files being generated in the FASTA directory under a directory for each gene. Genes will take
+			6-20 minutes to collect. I only saw 20 min collection time in a few cases, but it is worth noting that it will take a while.
+
+2. Alignment Preparation
+	A. Requirements
+		1. Scripts will be found under Misc in the github archive and will demand a certain file structure that will be different from 
+			the previous step as they were run on different machines. Though, the existing FASTA directory and structure should be okay:
+			+ FASTA
+			+ AlignmentFiles
+			- combineFASTAFiles.py
+	B. How to Run:
+		python3 combineFASTAFiles.py
+
+3. 
+	A. Requirements:
+		1. Scripts will be found under Misc in the github archive and will demand a certain file structure that will be different from 
+			the previous step as they were run on different machines. Though, I think that I made it work such that the database can be reused:
+			+ Alignments
+				+ Clean Alignments
+				+ Condensed Clean Alignments
+				+ Data Files
+				+ Uncleaned Alignments
+					- If you are utilizing my provided Alignments, put them here
+			+ Data
+				- dbLocal.sqlite3
+			+ Documentation
+				+ Alignment Metrics
+			+ FASTA Files
+		2. If dbLocal.sqlite3 is not present, run with arguments -d and -f to create it (I changed the name to match the one created for step 
+			1 and it should use the same taxonomy table). If you perform these operations you may have to change the email definition at line 29
+	B. Execution Instructions
+		python3 AlignmentProcess.py
+		python3 intergenicCalc.py
+		python3 datTableCondense.py
+
+4. Running Analysis.R should utilize the ouput from datTableCondense.py, but the directory will be wrond depending on your drive mapping/OS
