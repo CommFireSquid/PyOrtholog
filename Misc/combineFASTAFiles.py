@@ -1,7 +1,7 @@
 import os
 
-directoryIn = './Loose FASTAs'
-directoryOut = './AlignmentFiles_2'
+directoryIn = './FASTA'
+directoryOut = './AlignmentFiles'
 
 for directory in os.listdir(directoryIn):
 	fileName = '{}_all.fasta'.format(directory)
