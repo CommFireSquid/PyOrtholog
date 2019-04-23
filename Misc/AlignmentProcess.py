@@ -12,15 +12,15 @@ availabilityOut = [['Pathway','Gene','TaxCount']]
 
 # Directory values
 alignDir = 'Alignments/'
-alignIn = alignDir + 'Trees/' # Where to get the files that need their species names cleaned
-alignOut = alignDir + 'DatFiles/' # Where to put the files with cleaned species names
+alignIn = alignDir + 'Uncleaned Alignments/' # Where to get the files that need their species names cleaned
+alignOut = alignDir + 'Clean Alignments/' # Where to put the files with cleaned species names
 dataDir = 'Data/'
 docDir = 'Documentation/Alignment Metrics'
 alignAvail = 'AvailableAlignments.csv'
 datTempDirectory = 'temp/'
 
 # Database values
-dbname = dataDir + 'taxDB.sqlite3'
+dbname = dataDir + 'dbLocal.sqlite3'
 commitSize = 100000
 connection = sqlite3.connect(dbname)
 cursor = connection.cursor()
