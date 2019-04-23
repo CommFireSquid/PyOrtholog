@@ -18,15 +18,14 @@ import os
 import ftplib
 import shutil
 import sqlite3
-import gzip
 
 def main():
 	target = 'gene_orthologs.gz'
-	filename = './Data/geneOrthologs.txt'
+	filename = './geneOrthologs.txt'
 	database = './Data/dbLocal.sqlite3'
 
 	ftpHarvest(target, filename)
-	orthoLogIterWrite(database, target,filename)
+	orthoLogIterWrite(database, filename)
 
 def ftpHarvest(target, filename):
 	fileOut = open(target, "wb")
@@ -39,11 +38,12 @@ def ftpHarvest(target, filename):
 	ftp.close()
 	fileOut.close()
 
+	shutil.unpack_archive(target)
 	#os.system('gunzip {}'.format(target))
-	shutil.move(target, "./Data/" + target)
+	shutil.move(target[:-3], "./Data/" + filename)
 	#os.system('mv {} {}'.format(target[:-3], "./Data/" + filename))
 
-def orthoLogIterWrite(database, target,filename):
+def orthoLogIterWrite(database, filename):
 	conn = sqlite3.connect(database)
 	c = conn.cursor()
 
@@ -53,10 +53,7 @@ def orthoLogIterWrite(database, target,filename):
 	# Find the next available PK value for the table and default to 0 if no value is found
 	maxPKval = 0
 	commitCTR = 0
-	with gzip.open('./Data/' + target, 'r') as fileIn:
-		with open(filename, 'wb') as fileOut:
-			shutil.copyfileobj(fileIn, fileOut)
-	with open(filename,'r') as fileIn:
+	with open('../Data/' + filename, 'r') as fileIn:
 		line = fileIn.readline()	# First line will be a header line that contains the names of the columns, not useful because we already know what the data will contain.
 		line = fileIn.readline()
 
@@ -73,7 +70,7 @@ def orthoLogIterWrite(database, target,filename):
 
 
 	conn.commit() # Final commit to catch any remaining transactions in the ether
-	os.remove("./Data/" + target)
+	os.remove("./Data/" + filename)
 	#os.system('rm {}'.format("./Data/" + filename))
 
 if __name__ == "__main__":
